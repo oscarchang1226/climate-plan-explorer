@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </div>
                     {/*Header for targets*/}
                     <div className={`${roboto.className}`}>
-                        <p className="font-bold mt-4">Targets</p>
+                        <p className="font-bold mt-4">Emissions Reduction Targets</p>
                         {targets?.map((target) => (
                             <div key={target.id}>
                                 <p>{target.name}</p>
@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         ))}
                         <div className="mt-4 mb-4"></div>
 
-                        <p className="font-bold mt-4">Action Plans</p>
+                        <p className="font-bold mt-4">Key Resources</p>
                         {plans?.map((plan) => (
                             <div key={plan.id} className="flex">
                                 <p className="w-full">{plan.name}</p>
