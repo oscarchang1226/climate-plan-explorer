@@ -1,5 +1,5 @@
-// import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
 import { fetchFilteredCities } from '@/app/lib/data';
+import Link from 'next/link'
 
 export default async function CitiesTable(
     {
@@ -23,15 +23,14 @@ export default async function CitiesTable(
                             >
                                 <div className="flex w-full items-center justify-between pt-4">
                                     <div>
+                                        <Link href={`/cities/${city.id}`}>
+                                            <p className="text-xl font-medium">{city.name}</p>
+                                        </Link>
                                         <p className="text-xl font-medium">{city.name}</p>
                                         <p>{city.state}</p>
-                                        <p>{city.climate_target_count}</p>
                                         <p>{city.climate_plan_count}</p>
+                                        <p>{city.climate_target_count}</p>
                                     </div>
-                                    {/*<div className="flex justify-end gap-2">*/}
-                                    {/*    <UpdateInvoice id={invoice.id} />*/}
-                                    {/*    <DeleteInvoice id={invoice.id} />*/}
-                                    {/*</div>*/}
                                 </div>
                             </div>
                         ))}
@@ -61,7 +60,9 @@ export default async function CitiesTable(
                             >
                                 <td className="whitespace-nowrap py-3 pl-6 pr-3">
                                     <div className="flex items-center gap-3">
-                                        <p>{city.name}</p>
+                                        <Link href={`/cities/${city.id}`}>
+                                            <p>{city.name}</p>
+                                        </Link>
                                     </div>
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-3">
@@ -73,12 +74,6 @@ export default async function CitiesTable(
                                 <td className="whitespace-nowrap px-3 py-3">
                                     {city.climate_plan_count}
                                 </td>
-                                {/*<td className="whitespace-nowrap py-3 pl-6 pr-3">*/}
-                                {/*    <div className="flex justify-end gap-3">*/}
-                                {/*        <UpdateInvoice id={invoice.id} />*/}
-                                {/*        <DeleteInvoice id={invoice.id} />*/}
-                                {/*    </div>*/}
-                                {/*</td>*/}
                             </tr>
                         ))}
                         </tbody>
