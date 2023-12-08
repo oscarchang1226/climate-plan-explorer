@@ -1,10 +1,10 @@
-import Link from 'next/link';
 import { comfortaa } from "@/app/ui/fonts";
 import Search from "@/app/ui/search";
 import Table from "@/app/ui/cities/table";
 import { fetchCitiesPages } from "@/app/lib/data";
 import { Suspense } from "react";
 import { CitiesTableSkeleton } from "@/app/ui/skeletons";
+import Pagination from "@/app/ui/cities/pagination"
 
 export default async function Page(
     {
@@ -27,9 +27,12 @@ export default async function Page(
                         <Search placeholder="Search Cities..."/>
 
                     </div>
-                    <Suspense key={query + currentPage} fallback={<CitiesTableSkeleton />}>
-                        <Table query={query} currentPage={currentPage} />
+                    <Suspense key={query + currentPage} fallback={<CitiesTableSkeleton/>}>
+                        <Table query={query} currentPage={currentPage}/>
                     </Suspense>
+                    <div className="mt-5 flex w-full justify-center">
+                        <Pagination totalPages={totalPages}/>
+                    </div>
                 </div>
             </div>
         </main>

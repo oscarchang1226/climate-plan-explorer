@@ -8,7 +8,7 @@ import { sql } from '@vercel/postgres'
 import { unstable_noStore as noStore } from "next/cache";
 
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 export async function fetchCitiesPages(query: string) {
     noStore()
 

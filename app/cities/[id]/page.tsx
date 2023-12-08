@@ -1,10 +1,7 @@
 import { fetchCityById, fetchCityPlansById, fetchCityTargetsById } from "@/app/lib/data"
 import {comfortaa, roboto} from "@/app/ui/fonts";
 import { Button } from "@/app/ui/plans/button"
-import Search from "@/app/ui/search";
-import {Suspense} from "react";
-import {CitiesTableSkeleton} from "@/app/ui/skeletons";
-import Table from "@/app/ui/cities/table";
+import Link from 'next/link'
 
 export default async function Page({ params }: { params: { id: string } }) {
 
@@ -19,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
                 <div className="w-full">
                     <div className="flex w-full items-center justify-between">
-                        <h1 className={`${comfortaa.className} text-3xl font-bold mb-4`}>City of {city.name}, {city.state}</h1>
+                        <Link href="/"><h1 className={`${comfortaa.className} text-3xl font-bold mb-4`}>City of {city.name}, {city.state}</h1></Link>
                     </div>
                     {/*Header for targets*/}
                     <div className={`${roboto.className}`}>
