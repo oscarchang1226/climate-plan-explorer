@@ -12,9 +12,9 @@ async function seedCities(client) {
         // Create the "cities" table if it doesn't exist
         const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS cities (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        state TEXT NOT NULL,
+        state TEXT NOT NULL
       );
     `;
 
@@ -49,13 +49,13 @@ async function seedActionPlans(client) {
         // Create the "action_plans" table if it doesn't exist
         const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS action_plans (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255),
         adoption_date date,
         document_link TEXT,
         page_link TEXT,
         type TEXT,
-        city_id UUID NOT NULL,
+        city_id VARCHAR(255) NOT NULL
       );
     `;
 
@@ -63,11 +63,23 @@ async function seedActionPlans(client) {
 
         // Insert data into the "action_plans" table
         const insertedActionPlans = await Promise.all(
-            actionPlans.map(async (plan) => {
+            actionPlans.filter(i => i.adoptionDate).map(async (plan) => {
                 const cityId = plan.id.split("_plan_")[0]
                 return client.sql`
         INSERT INTO action_plans (id, name, adoption_date, document_link, page_link, type, city_id)
-        VALUES (${plan.id}, ${plan.name}, ${plan.adoptionDate}, ${plan.documentLink}, ${plan.pageLink}, ${plan.type}, ${cityId})
+        VALUES (${plan.id}, ${plan.name}, ${plan.adoptionDate ?? 'NULL'}, ${plan.documentLink}, ${plan.pageLink}, ${plan.type}, ${cityId})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+            }),
+        );
+
+        // Insert data into the "action_plans" table
+        const insertedActionPlansWithNoAdoptionDate = await Promise.all(
+            actionPlans.filter(i => !i.adoptionDate).map(async (plan) => {
+                const cityId = plan.id.split("_plan_")[0]
+                return client.sql`
+        INSERT INTO action_plans (id, name, document_link, page_link, type, city_id)
+        VALUES (${plan.id}, ${plan.name}, ${plan.documentLink}, ${plan.pageLink}, ${plan.type}, ${cityId})
         ON CONFLICT (id) DO NOTHING;
       `;
             }),
@@ -77,7 +89,7 @@ async function seedActionPlans(client) {
 
         return {
             createTable,
-            cities: insertedActionPlans,
+            cities: insertedActionPlansWithNoAdoptionDate,
         };
     } catch (error) {
         console.error('Error seeding action plans:', error);
@@ -93,7 +105,7 @@ async function seedTargets(client) {
       CREATE TABLE IF NOT EXISTS targets (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255),
-        plan_id UUID NOT NULL,
+        plan_id VARCHAR(255) NOT NULL
       );
     `;
 
@@ -104,8 +116,8 @@ async function seedTargets(client) {
             targets.map(async (target) => {
                 const planId = target.actionPlanId
                 return client.sql`
-        INSERT INTO action_plans (id, name, plan_id)
-        VALUES (${plan.id}, ${plan.name}, ${planId})
+        INSERT INTO targets (name, plan_id)
+        VALUES (${target.name}, ${planId})
         ON CONFLICT (id) DO NOTHING;
       `;
             }),
@@ -122,3 +134,19 @@ async function seedTargets(client) {
         throw error;
     }
 }
+
+async function main() {
+    const client = await db.connect();
+
+    // await seedCities(client);
+    // await seedActionPlans(client);
+    await seedTargets(client);
+
+    await client.end();
+}
+main().catch((err) => {
+    console.error(
+        'An error occurred while attempting to seed the database:',
+        err,
+    );
+});

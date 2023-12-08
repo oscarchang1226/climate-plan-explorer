@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { comfortaa } from "@/app/ui/fonts";
 import Search from "@/app/ui/search";
-import CitiesTable from "@/app/ui/cities/table";
+import Table from "@/app/ui/cities/table";
 import { fetchCitiesPages } from "@/app/lib/data";
+import { Suspense } from "react";
+import { CitiesTableSkeleton } from "@/app/ui/skeletons";
 
 export default async function Page(
     {
@@ -13,7 +15,7 @@ export default async function Page(
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
 
-    // const totalPages = await fetchCitiesPages(query)
+    const totalPages = await fetchCitiesPages(query)
     return (
         <main className="flex h-screen flex-col md:flex-row md:overflow-hidden">
             <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
@@ -25,6 +27,9 @@ export default async function Page(
                         <Search placeholder="Search Cities..."/>
 
                     </div>
+                    <Suspense key={query + currentPage} fallback={<CitiesTableSkeleton />}>
+                        <Table query={query} currentPage={currentPage} />
+                    </Suspense>
                 </div>
             </div>
         </main>

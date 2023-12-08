@@ -648,7 +648,7 @@ const actionPlans = [
     },
     {
         "name": "Climate Action Plan",
-        "adoptionDate": "December",
+        "adoptionDate": "",
         "documentLink": "https://www.cityofepa.org/sites/default/files/fileattachments/community_amp_economic_development/page/9041/12-20-11_final_east_palo_alto_climate_action_plan_201311071556140538.pdf",
         "pageLink": "https://www.cityofepa.org/econdev/page/climate-action-plan",
         "type": "CAP",
@@ -808,7 +808,7 @@ const actionPlans = [
     },
     {
         "name": "Hayward Climate Action Plan",
-        "adoptionDate": "June",
+        "adoptionDate": "",
         "documentLink": "http://www.hayward-ca.gov/sites/default/files/Hayward_CAP_FINAL_11-6-09%20-%20full%20document.pdf",
         "pageLink": "http://www.hayward-ca.gov/services/city-services/climate-action",
         "type": "CAP",
@@ -1200,7 +1200,7 @@ const actionPlans = [
     },
     {
         "name": "Climate Action Plan",
-        "adoptionDate": "June",
+        "adoptionDate": "",
         "documentLink": "https://berkeleyca.gov/sites/default/files/2022-01/Berkeley-Climate-Action-Plan.pdf",
         "pageLink": "http://www.cityofberkeley.info/ContentDisplay.aspx?id=70996",
         "type": "CAP",
@@ -1914,3 +1914,9 @@ const targets = [
         "actionPlanId": "cloverdale_ca_plan_1"
     },
 ]
+
+module.exports = {
+    cities,
+    actionPlans,
+    targets
+};

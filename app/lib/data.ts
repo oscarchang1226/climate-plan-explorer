@@ -36,12 +36,8 @@ export async function fetchFilteredCities(
       SELECT
         cities.id,
         cities.name,
-        cities.state,
-        ct.climate_target_count,
-        cp.climate_plan_count
+        cities.state
       FROM cities
-      LEFT JOIN (SELECT city_id, COUNT(*) as climate_target_count FROM climate_targets) as ct ON ct.city_id = cities.id
-      LEFT JOIN (SELECT city_id, COUNT(*) as climate_plan_count FROM climate_plans) as cp ON cp.city_id = cities.id
       WHERE
         cities.name ILIKE ${`%${query}%`} OR
         cities.id ILIKE ${`%${query}%`} OR
